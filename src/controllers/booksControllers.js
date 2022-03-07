@@ -35,6 +35,15 @@ class BooksControllers {
     }
     return id;
   }
+
+  getBooksControllers() {
+    return this._books;
+  }
+
+  getBookByIdControllers(id) {
+    console.log(id);
+    return this._books.filter((book) => book.id === id)[0];
+  }
 }
 
 module.exports = BooksControllers;
