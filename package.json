@@ -1,0 +1,30 @@
+{
+  "name": "bookshelf_gcloud",
+  "version": "1.0.0",
+  "description": "submision_1 Belajar Membuat Aplikasi Back-End untuk Pemula dengan Google Cloud",
+  "main": "index.js",
+  "scripts": {
+    "start-prod": "NODE_ENV=production node ./src/server.js",
+    "start-dev": "nodemon ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vikraam27/bookshelf_api.git"
+  },
+  "author": "vikram",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vikraam27/bookshelf_api/issues"
+  },
+  "homepage": "https://github.com/Vikraam27/bookshelf_api#readme",
+  "dependencies": {
+    "@hapi/hapi": "^20.2.1",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "nodemon": "^2.0.15"
+  }
+}
