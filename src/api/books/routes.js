@@ -19,6 +19,11 @@ const routes = (handler) => [
     path: '/books/{id}',
     handler: handler.editBookHandler,
   },
+  {
+    method: 'DELETE',
+    path: '/books/{id}',
+    handler: handler.deleteBookHandler,
+  },
 ];
 
 module.exports = routes;

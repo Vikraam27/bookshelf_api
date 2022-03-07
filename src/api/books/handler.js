@@ -1,5 +1,6 @@
 const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
+const mapData = require('../../utils/mapData');
 
 class BookHandler {
   constructor({ controllers }) {
@@ -9,6 +10,7 @@ class BookHandler {
     this.getAllBooksHanlder = this.getAllBooksHanlder.bind(this);
     this.getBookByIdHandler = this.getBookByIdHandler.bind(this);
     this.editBookHandler = this.editBookHandler.bind(this);
+    this.deleteBookHandler = this.deleteBookHandler.bind(this);
   }
 
   addBookHandler(request, h) {
@@ -35,12 +37,66 @@ class BookHandler {
     return response;
   }
 
-  getAllBooksHanlder() {
-    const books = this._controllers.getBooksControllers().map((data) => ({
-      id: data.id,
-      name: data.name,
-      publisher: data.publisher,
-    }));
+  getAllBooksHanlder(request) {
+    const { name, reading, finished } = request.query;
+    if (name) {
+      const books = mapData(this._controllers.searchBookByNameControllers(name));
+
+      return {
+        status: 'success',
+        data: {
+          books,
+        },
+      };
+    }
+
+    if (reading) {
+      if (reading === '0') {
+        const books = mapData(this._controllers.getReadedBooksControllers(false));
+
+        return {
+          status: 'success',
+          data: {
+            books,
+          },
+        };
+      }
+      if (reading === '1') {
+        const books = mapData(this._controllers.getReadedBooksControllers(true));
+
+        return {
+          status: 'success',
+          data: {
+            books,
+          },
+        };
+      }
+    }
+
+    if (finished) {
+      if (finished === '0') {
+        const books = mapData(this._controllers.getFinishedBooksControllers(false));
+
+        return {
+          status: 'success',
+          data: {
+            books,
+          },
+        };
+      }
+      if (finished === '1') {
+        const books = mapData(this._controllers.getFinishedBooksControllers(true));
+
+        return {
+          status: 'success',
+          data: {
+            books,
+          },
+        };
+      }
+    }
+
+    const books = mapData(this._controllers.getBooksControllers());
 
     return {
       status: 'success',
@@ -88,6 +144,22 @@ class BookHandler {
       };
     }
     throw new NotFoundError('Gagal memperbarui buku. Id tidak ditemukan');
+  }
+
+  deleteBookHandler(request) {
+    const { id } = request.params;
+
+    const isBookExist = this._controllers.getBookByIdControllers(id);
+
+    if (isBookExist) {
+      this._controllers.deleteBookControllers(id);
+
+      return {
+        status: 'success',
+        message: 'Buku berhasil dihapus',
+      };
+    }
+    throw new NotFoundError('Buku gagal dihapus. Id tidak ditemukan');
   }
 }
 

@@ -40,6 +40,18 @@ class BooksControllers {
     return this._books;
   }
 
+  searchBookByNameControllers(name) {
+    return this._books.filter((q) => q.name.toLowerCase().includes(name.toLowerCase()));
+  }
+
+  getReadedBooksControllers(isReaded) {
+    return this._books.filter((q) => q.reading === isReaded);
+  }
+
+  getFinishedBooksControllers(isFinish) {
+    return this._books.filter((q) => q.finished === isFinish);
+  }
+
   getBookByIdControllers(id) {
     return this._books.filter((book) => book.id === id)[0];
   }
@@ -63,6 +75,13 @@ class BooksControllers {
         reading,
         updatedAt,
       };
+    }
+  }
+
+  deleteBookControllers(id) {
+    const index = this._books.findIndex((book) => book.id === id);
+    if (index !== -1) {
+      this._books.splice(index, 1);
     }
   }
 }
