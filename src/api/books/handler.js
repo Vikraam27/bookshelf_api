@@ -1,3 +1,4 @@
+const ClientError = require('../../exceptions/ClientError');
 const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
 const mapData = require('../../utils/mapData');
@@ -18,7 +19,7 @@ class BookHandler {
       name, year, author, summary, publisher, pageCount, readPage, reading,
     } = request.payload;
     if (!name) {
-      throw new InvariantError('Gagal menambahkan buku. Mohon isi nama buku');
+      throw new ClientError('Gagal menambahkan buku. Mohon isi nama buku');
     }
     if (readPage > pageCount) {
       throw new InvariantError('Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount');
