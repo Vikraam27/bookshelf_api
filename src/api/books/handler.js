@@ -8,6 +8,7 @@ class BookHandler {
     this.addBookHandler = this.addBookHandler.bind(this);
     this.getAllBooksHanlder = this.getAllBooksHanlder.bind(this);
     this.getBookByIdHandler = this.getBookByIdHandler.bind(this);
+    this.editBookHandler = this.editBookHandler.bind(this);
   }
 
   addBookHandler(request, h) {
@@ -52,7 +53,6 @@ class BookHandler {
   getBookByIdHandler(request) {
     const { id } = request.params;
     const book = this._controllers.getBookByIdControllers(id);
-    console.log(book);
 
     if (!book) {
       throw new NotFoundError('Buku tidak ditemukan');
@@ -63,6 +63,31 @@ class BookHandler {
         book,
       },
     };
+  }
+
+  editBookHandler(request) {
+    const { id } = request.params;
+    const {
+      name, year, author, summary, publisher, pageCount, readPage, reading,
+    } = request.payload;
+    if (!name) {
+      throw new InvariantError('Gagal memperbarui buku. Mohon isi nama buku');
+    }
+    if (readPage > pageCount) {
+      throw new InvariantError('Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount');
+    }
+    const isBookExist = this._controllers.getBookByIdControllers(id);
+    if (isBookExist) {
+      this._controllers.editBookControllers({
+        id, name, year, author, summary, publisher, pageCount, readPage, reading,
+      });
+
+      return {
+        status: 'success',
+        message: 'Buku berhasil diperbarui',
+      };
+    }
+    throw new NotFoundError('Gagal memperbarui buku. Id tidak ditemukan');
   }
 }
 

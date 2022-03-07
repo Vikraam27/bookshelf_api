@@ -41,8 +41,29 @@ class BooksControllers {
   }
 
   getBookByIdControllers(id) {
-    console.log(id);
     return this._books.filter((book) => book.id === id)[0];
+  }
+
+  editBookControllers({
+    id, name, year, author, summary, publisher, pageCount, readPage, reading,
+  }) {
+    const updatedAt = new Date().toISOString();
+
+    const index = this._books.findIndex((book) => book.id === id);
+    if (index !== -1) {
+      this._books[index] = {
+        ...this._books[index],
+        name,
+        year,
+        author,
+        summary,
+        publisher,
+        pageCount,
+        readPage,
+        reading,
+        updatedAt,
+      };
+    }
   }
 }
 
